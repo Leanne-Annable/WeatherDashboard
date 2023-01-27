@@ -14,4 +14,28 @@
 //          The humidity
 //     When a user click on a city in the search history they are again presented with current and future conditions for that city
 
-// Base for API calls = ("https://api.openweathermap.org/data/2.5/forecast?lat=" + linkLatValue + "&lon=" + linkLonValue + "&appid=48028b3db5f1aefd0fc887212580e039")
+// Base for API calls = ("https://api.openweathermap.org/data/2.5/forecast?lat=" + linkLatValue + "&lon=" + linkLonValue + "&appid=48028b3db5f1aefd0fc887212580e039") <= my API key
+
+/* need to create an 'on click' event on the search button to:
+    -   store the location searched into a list to display on screen
+        -   The list should be made of buttons or at least be clickable
+        -   The list should prepend so that the latest search is at the top of the list
+        -   The list should also be re-clickable to retrieve past data again
+    -   retrieve the information from the website about that location via ajax
+        -   This should be called using the lat and lon - explore the weather api app to find link possibilities
+    -   store that info into local storage so it will be used again in future
+        -   This is what will be called again by clicking the list buttons/name
+    -   present the retrieved information on screen in the form of current weather and also a five day forecast.
+        -   Need to have the current data filling the top section and include location, date, font-awesome icon and stats
+            -   Need to link current date via moment
+        -   The 5 day forecast needs to be five individual boxes with background color, date, icon and stats
+            -   dates linked via moment using the moment.js date and .add(x, 'days') <= https://momentjs.com/docs/#/manipulating/add/
+*/
+
+
+// ** Style changes/notes **
+// need to colour the header in an ombre of blue and have white text
+// search text box needs to fill aside width and have curved edges
+// search button to be blue with curved edges and also fill aside width
+// location list/buttons need to be light grey with curved edges and fill the aside width
+// 5-day forecast boxes need a background colour and to have a margin/padding round them
