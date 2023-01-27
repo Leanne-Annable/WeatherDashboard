@@ -29,7 +29,7 @@ var latVal = ""; // a variabble to store the latitude
 var lonVal = ""; // a variable to store the longitude
 var QueryURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latVal + "&lon=" + lonVal + "&appid=" + apiKey; // the query we can send in to get the result
 
-
+renderSearchHistory()
 
 /* need to create an 'on click' event on the search button to:
     -   store the location searched into a list to display on screen
@@ -47,8 +47,20 @@ var QueryURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latVal 
             -   dates linked via moment using the moment.js date and .add(x, 'days') <= https://momentjs.com/docs/#/manipulating/add/
 */
 
-//function for rendering the buttons to screen
-function getCities(){
+function renderSearchHistory(){
+    // get any store info from local storage
+    var previousSearches = JSON.parse(localStorage.getItem("SearchHistory"));
+    // if there is nothing previously saved, end the function
+    if (previousSearches !== null){
+        locationsArray = previousSearches
+    }
+    // do a for loop to add each button to the list
+    renderButtons()
+}
+
+
+//function for rendering the buttons to screen given the cities searched/search history
+function renderButtons(){
     // delete the buttons prior to adding new cities to stop repeated buttons
     $("#city-list").empty();
     //loop through the array of cities
@@ -69,13 +81,26 @@ function getCities(){
 // **click-events**
 $("#search-button").on("click", function(event){
     event.preventDefault();
+
     // grab the input from the text box
-    var searchInput = $("#search-input").val();
-    // add the location to the selected locations array, unshift moves it to the front of the list
-    locationsArray.unshift(searchInput);
+    var cityInput = $("#search-input").val();
+
+    // check if the cityInput is already in the locationsArray
+    var checkArray = locationsArray.includes(cityInput);
+    if (checkArray === true){
+        // alert the user and end the search
+        alert("That City is already in your search History")
+        return
+    } else {
+        // add the location to the selected locations array, unshift moves it to the front of the list        
+        locationsArray.unshift(cityInput);
+        // set the item to local storage using JSON stringify to make an array
+        localStorage.setItem("SearchHistory", JSON.stringify(locationsArray));
+    };
+
     console.log(locationsArray) // check to see if it works - it does XD
 
-    getCities() // call a function to render the buttons of the cities selected
+    renderButtons() // call a function to render the buttons of the cities selected
 })
 
 
