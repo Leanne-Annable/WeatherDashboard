@@ -1,0 +1,42 @@
+button {
+    background-color: lightgrey;
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+}
+
+#city-list{
+    padding: 0;
+    border: none;
+}
+
+.city{
+    border-radius: 5px;
+    margin: 1px;
+    margin-bottom: 10px;
+}
+
+
+#search-button{
+    background: lightskyblue;
+    border-radius: 5px;
+    margin-top: 5px;
+    padding: 0;
+}
+
+.input-group-append{
+    display: block;
+    padding: 0 !important;
+}
+
+.hr {
+    padding:0 !important;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    background-color: black;
+}
+
+.form-input {
+    border-width: 1px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}

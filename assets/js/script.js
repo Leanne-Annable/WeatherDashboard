@@ -33,8 +33,8 @@ renderSearchHistory()
 
 /* need to create an 'on click' event on the search button to:
     -   store the location searched into a list to display on screen
-        -   The list should be made of buttons or at least be clickable
-        -   The list should prepend so that the latest search is at the top of the list
+        -   The list should be made of buttons or at least be clickable - DONE
+        -   The list should prepend so that the latest search is at the top of the list - DONE
         -   The list should also be re-clickable to retrieve past data again
     -   retrieve the information from the website about that location via ajax
         -   This should be called using the lat and lon - explore the weather api app to find link possibilities
@@ -50,11 +50,10 @@ renderSearchHistory()
 function renderSearchHistory(){
     // get any store info from local storage
     var previousSearches = JSON.parse(localStorage.getItem("SearchHistory"));
-    // if there is nothing previously saved, end the function
+    // if there is something previously saved, the locations array should equal the stored data
     if (previousSearches !== null){
         locationsArray = previousSearches
     }
-    // do a for loop to add each button to the list
     renderButtons()
 }
 
