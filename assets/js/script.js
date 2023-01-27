@@ -11,6 +11,7 @@
 //          The date
 //          An icon representation of weather conditions
 //          The temperature
+//          The wind speed
 //          The humidity
 //     When a user click on a city in the search history they are again presented with current and future conditions for that city
 
@@ -21,14 +22,12 @@
 // how to get the icon - https://openweathermap.org/weather-conditions
 
 
-// created variables
-
-// Need to create an empty list to be able to store the list of cities searched
-var selectedLocations = [];
-var apiKey = "48028b3db5f1aefd0fc887212580e039";
-var latVal = "";
-var lonVal = "";
-var QueryURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latVal + "&lon=" + lonVal + "&appid=" + apiKey;
+// **created variables**
+var locationsArray = []; // Need to create an empty list to be able to store the list of cities searched
+var apiKey = "48028b3db5f1aefd0fc887212580e039"; // my API key
+var latVal = ""; // a variabble to store the latitude
+var lonVal = ""; // a variable to store the longitude
+var QueryURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latVal + "&lon=" + lonVal + "&appid=" + apiKey; // the query we can send in to get the result
 
 
 
@@ -47,13 +46,36 @@ var QueryURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latVal 
         -   The 5 day forecast needs to be five individual boxes with background color, date, icon and stats
             -   dates linked via moment using the moment.js date and .add(x, 'days') <= https://momentjs.com/docs/#/manipulating/add/
 */
+
+//function for rendering the buttons to screen
+function getCities(){
+    // delete the buttons prior to adding new cities to stop repeated buttons
+    $("#city-list").empty();
+    //loop through the array of cities
+    for (var i=0; i< locationsArray.length; i++){
+        // generate a button for each entry
+        var a = $("<button>");
+        // Adding a class of city to our button
+        a.addClass("city");
+        // Adding a data-attribute
+        a.attr("city-name", locationsArray[i]);
+        // Providing the initial button text
+        a.text(locationsArray[i]);
+        // Adding the button to the city-list div
+        $("#city-list").append(a);
+    }
+}
+
+// **click-events**
 $("#search-button").on("click", function(event){
     event.preventDefault();
     // grab the input from the text box
     var searchInput = $("#search-input").val();
-    // add the location to the selected locations array
-    selectedLocations.push(searchInput);
-    console.log(selectedLocations) // check to see if it works - it does XD
+    // add the location to the selected locations array, unshift moves it to the front of the list
+    locationsArray.unshift(searchInput);
+    console.log(locationsArray) // check to see if it works - it does XD
+
+    getCities() // call a function to render the buttons of the cities selected
 })
 
 
