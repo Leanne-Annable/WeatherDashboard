@@ -40,3 +40,12 @@ button {
     border-radius: 5px;
     margin-bottom: 5px;
 }
+
+img{
+    width: 40px;
+
+}
+
+.card{
+    padding-left: 10px;
+}
