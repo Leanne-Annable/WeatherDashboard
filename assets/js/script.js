@@ -15,6 +15,22 @@
 //     When a user click on a city in the search history they are again presented with current and future conditions for that city
 
 // Base for API calls = ("https://api.openweathermap.org/data/2.5/forecast?lat=" + linkLatValue + "&lon=" + linkLonValue + "&appid=48028b3db5f1aefd0fc887212580e039") <= my API key
+// api.openweathermap.org/data/2.5/forecast?q={city name}&appid=48028b3db5f1aefd0fc887212580e039    <= using city name in the search to get the lat and lon
+// https://openweathermap.org/forecast5#JSON - example
+// right after, use that to get the lat and lon information to get the weather
+// how to get the icon - https://openweathermap.org/weather-conditions
+
+
+// created variables
+
+// Need to create an empty list to be able to store the list of cities searched
+var selectedLocations = [];
+var apiKey = "48028b3db5f1aefd0fc887212580e039";
+var latVal = "";
+var lonVal = "";
+var QueryURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latVal + "&lon=" + lonVal + "&appid=" + apiKey;
+
+
 
 /* need to create an 'on click' event on the search button to:
     -   store the location searched into a list to display on screen
@@ -31,6 +47,14 @@
         -   The 5 day forecast needs to be five individual boxes with background color, date, icon and stats
             -   dates linked via moment using the moment.js date and .add(x, 'days') <= https://momentjs.com/docs/#/manipulating/add/
 */
+$("#search-button").on("click", function(event){
+    event.preventDefault();
+    // grab the input from the text box
+    var searchInput = $("#search-input").val();
+    // add the location to the selected locations array
+    selectedLocations.push(searchInput);
+    console.log(selectedLocations) // check to see if it works - it does XD
+})
 
 
 // ** Style changes/notes **
@@ -39,3 +63,4 @@
 // search button to be blue with curved edges and also fill aside width
 // location list/buttons need to be light grey with curved edges and fill the aside width
 // 5-day forecast boxes need a background colour and to have a margin/padding round them
+
