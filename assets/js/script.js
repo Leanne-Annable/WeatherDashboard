@@ -51,18 +51,20 @@ function getWeather() {
     dailyCards.empty()
     // do an ajax call to the website
     $.ajax({
-        url: "https://api.openweathermap.org/data/2.5/weather?q=" + cityInput + "&appid=" + apiKey + "&units=metric",
+        url: "https://api.openweathermap.org/data/2.5/weather?q=" + capCity + "&appid=" + apiKey + "&units=metric",
         method: "GET"
     }).then(function (response) {
-        // use moment to call the date
-        var date = moment.unix(response.dt + response.timezone).format("DD/MM/YYYY");
-        var name = $("<h3>").text(cityInput + " (" + date + ")");
+        // use moment to call the current date and time for the chosen area
+        var todayDate = moment.unix(response.dt + response.timezone).format("(DD/MM/YYYY) HH:mm:ss");
+        // print as a heading
+        var currentCity = $("<h3>").text(capCity + " " + todayDate);
+        // get the linked icon and stats
         var iconURL = $("<img>").attr("src", "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png");
         var temp = $("<p>").text("Temp: " + response.main.temp + "°C");
-        var windSpeed = $("<p>").text("Wind: " +response.wind.speed + "mtr/sec");
-        var humidity = $("<p>").text("Humidity: " + response.main.humidity + "%");      
-        mainCard.append(name, iconURL, temp, windSpeed, humidity)
-
+        var windSpeed = $("<p>").text("Wind: " +response.wind.speed + " mtr/sec");
+        var humidity = $("<p>").text("Humidity: " + response.main.humidity + "%"); 
+        // append the items to the top secion display
+        mainCard.append(currentCity, iconURL, temp, windSpeed, humidity);
         })
 
     }
@@ -100,22 +102,30 @@ function renderButtons() {
 }
 
 // **click-events**
+// search button
 $("#search-button").on("click", function (event) {
     event.preventDefault();
 
     // grab the input from the text box
     cityInput = $("#search-input").val();
+    // take the first letter of the word, turn the it to a capital letter and add it to the rest of the word
+    capCity = cityInput.charAt(0).toUpperCase() + cityInput.slice(1);
     // get the data from the weather site using a created getWeather function
     getWeather();
+    // check that a location has been inputted
+    if (cityInput === "" || cityInput === " "){
+        alert("Please input a location")
+        return
+    }
     // check if the cityInput is already in the locationsArray
-    var checkArray = locationsArray.includes(cityInput);
+    var checkArray = locationsArray.includes(capCity);
     if (checkArray === true) {
         // alert the user and end the search
         alert("That City is already in your search History")
         return
     } else {
         // add the location to the selected locations array, unshift moves it to the front of the list        
-        locationsArray.unshift(cityInput);
+        locationsArray.unshift(capCity);
         // set the item to local storage using JSON stringify to make an array
         localStorage.setItem("SearchHistory", JSON.stringify(locationsArray));
     };
@@ -125,10 +135,11 @@ $("#search-button").on("click", function (event) {
     renderButtons() // call a function to render the buttons of the cities selected
 })
 
-//click event for the buttons in the search history
+// reselect data from the search history
 $(".city").on("click", function (event) {
     event.preventDefault();
-
+    capCity = $(this).text();
+    getWeather();
 })
 
 // ** Style changes/notes **
