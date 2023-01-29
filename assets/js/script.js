@@ -61,11 +61,52 @@ function getWeather() {
         // get the linked icon and stats
         var iconURL = $("<img>").attr("src", "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png");
         var temp = $("<p>").text("Temp: " + response.main.temp + "°C");
-        var windSpeed = $("<p>").text("Wind: " +response.wind.speed + " mtr/sec");
+        var windSpeed = $("<p>").text("Wind: " + response.wind.speed + " mtr/sec");
         var humidity = $("<p>").text("Humidity: " + response.main.humidity + "%"); 
         // append the items to the top secion display
         mainCard.append(currentCity, iconURL, temp, windSpeed, humidity);
         })
+    $.ajax({
+        url: "https://api.openweathermap.org/data/2.5/forecast?q=" + capCity + "&appid=" + apiKey + "&units=metric",
+        method: "GET"
+    }).then(function(response){
+        // create a for loop to loop through the data 5 times
+        for (i=0; i<response.list.length; i++){
+            // create a new div for each day giving the class column and forecast
+            var newCard = $("<div>").attr("class", "col forecast");
+            // console.log(newCard);
+            // create a list of each of the time sections retrieved
+            var dateList = moment(response.list[i].dt_txt).format("(DD/MM/YYYY) HH:mm:ss")
+            // console.log(dateList)
+            // filter through to get the 12:00 times
+            var forecastDate = moment(response.list[i].dt_txt).format("(DD/MM/YYYY)");
+            if (dateList === forecastDate + " 12:00:00"){
+                // console.log(dateList)
+                // create a new div for each of these
+                dailyCards.append(newCard);
+                // get the date
+                var headDate = $("<h5>").text(forecastDate);
+                // get the icon
+                var forecastIcon= $("<img>").attr("src", "http://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png")
+                // get the temp
+                var forecastTemp = $("<p>").text("Temp: " + response.list[i].main.temp + "°C");
+                // get the wind speed
+                var forecastWind = $("<p>").text("Wind: " + response.list[i].wind.speed + " mtr/sec");
+                // get the humidity
+                var forecastHumidity = $("<p>").text("Humidity: " + response.list[i].main.humidity + "%"); 
+                newCard.append(headDate, forecastIcon, forecastTemp, forecastWind, forecastHumidity);
+            }
+            // // print as a heading
+            
+            // // get the linked icon and stats
+            // var iconURL = $("<img>").attr("src", "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png");
+            // var temp = $("<p>").text("Temp: " + response.main.temp + "°C");
+            // var windSpeed = $("<p>").text("Wind: " + response.wind.speed + " mtr/sec");
+            // var humidity = $("<p>").text("Humidity: " + response.main.humidity + "%"); 
+            // // append the items to the top secion display
+            // newCard.append(forecastCity, iconURL, temp, windSpeed, humidity);
+        }        
+    })
 
     }
 

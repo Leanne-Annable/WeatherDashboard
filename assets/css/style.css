@@ -41,10 +41,10 @@ button {
     margin-bottom: 5px;
 }
 
-/* #today{
-    border: 1px solid black;
-} */
+#five-forecast{
+    margin: 0;
+}
 
-.card{
-    padding-left: 10px;
+.forecast{
+    padding: 0 !important;
 }
