@@ -5,21 +5,18 @@
 //          The date
 //          An icon representation of weather conditions
 //          The temperature
-//          The humidity
 //          The wind speed
+//          The humidity
 //     When a user view future weather conditions for that city they are presented with a 5-day forecast that displays:
 //          The date
 //          An icon representation of weather conditions
 //          The temperature
 //          The wind speed
 //          The humidity
-//     When a user click on a city in the search history they are again presented with current and future conditions for that city
-
-// https://openweathermap.org/forecast5#JSON - example
-// how to get the icon - https://openweathermap.org/weather-conditions
+//     When a user clicks on a city in the search history they are again presented with current and future conditions for that city
 
 
-// **created variables**
+//                                                              ** created variables **
 var locationsArray = []; // Need to create an empty list to be able to store the list of cities searched
 var apiKey = "48028b3db5f1aefd0fc887212580e039"; // my API key
 var cityInput = ""; // a variable to store the city
@@ -29,26 +26,15 @@ var dailyCards = $("#five-forecast"); // selects anything held within the 5-day 
 // calls the function to show previous searches as buttons
 renderSearchHistory()
 
-/* need to create an 'on click' event on the search button to:
-    -   store the location searched into a list to display on screen
-        -   The list should be made of buttons or at least be clickable - *DONE*
-        -   The list should prepend so that the latest search is at the top of the list - *DONE*
-        -   The list should also be re-clickable to retrieve past data again
-    -   retrieve the information from the website about that location via ajax
-        -   This should be called using the lat and lon - explore the weather api app to find link possibilities
-    -   store that info into local storage so it will be used again in future - *DONE*
-        -   This is what will be called again by clicking the list buttons/name
-    -   present the retrieved information on screen in the form of current weather and also a five day forecast.
-        -   Need to have the current data filling the top section and include location, date, font-awesome icon and stats
-            -   Need to link current date via moment
-        -   The 5 day forecast needs to be five individual boxes with background color, date, icon and stats
-*/
 
+//                                                                  ** functions **
 // function for getting weather data
 function getWeather() {
     // empty any current values for todays weather and the forecast
-    mainCard.empty()
-    dailyCards.empty()
+    mainCard.empty();
+    // add a class to the div so i can add a border when the function is run
+    mainCard.addClass("withBorder");
+    dailyCards.empty();
     // do an ajax call to the website
     $.ajax({
         url: "https://api.openweathermap.org/data/2.5/weather?q=" + capCity + "&appid=" + apiKey + "&units=metric",
@@ -61,7 +47,7 @@ function getWeather() {
         // get the linked icon and stats
         var iconURL = $("<img>").attr("src", "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png");
         var temp = $("<p>").text("Temp: " + response.main.temp + "°C");
-        var windSpeed = $("<p>").text("Wind: " + response.wind.speed + " mtr/sec");
+        var windSpeed = $("<p>").text("Wind: " + response.wind.speed + " m/sec");
         var humidity = $("<p>").text("Humidity: " + response.main.humidity + "%"); 
         // append the items to the top secion display
         mainCard.append(currentCity, iconURL, temp, windSpeed, humidity);
@@ -91,26 +77,14 @@ function getWeather() {
                 // get the temp
                 var forecastTemp = $("<p>").text("Temp: " + response.list[i].main.temp + "°C");
                 // get the wind speed
-                var forecastWind = $("<p>").text("Wind: " + response.list[i].wind.speed + " mtr/sec");
+                var forecastWind = $("<p>").text("Wind: " + response.list[i].wind.speed + " m/sec");
                 // get the humidity
                 var forecastHumidity = $("<p>").text("Humidity: " + response.list[i].main.humidity + "%"); 
                 newCard.append(headDate, forecastIcon, forecastTemp, forecastWind, forecastHumidity);
             }
-            // // print as a heading
-            
-            // // get the linked icon and stats
-            // var iconURL = $("<img>").attr("src", "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png");
-            // var temp = $("<p>").text("Temp: " + response.main.temp + "°C");
-            // var windSpeed = $("<p>").text("Wind: " + response.wind.speed + " mtr/sec");
-            // var humidity = $("<p>").text("Humidity: " + response.main.humidity + "%"); 
-            // // append the items to the top secion display
-            // newCard.append(forecastCity, iconURL, temp, windSpeed, humidity);
         }        
     })
-
-    }
-
-
+}
 
 // function for rendering the search history from the local storage
 function renderSearchHistory() {
@@ -142,7 +116,7 @@ function renderButtons() {
     }
 }
 
-// **click-events**
+//                                                                  ** click-events **
 // search button
 $("#search-button").on("click", function (event) {
     event.preventDefault();
@@ -182,11 +156,4 @@ $(".city").on("click", function (event) {
     capCity = $(this).text();
     getWeather();
 })
-
-// ** Style changes/notes **
-// need to colour the header in an ombre of blue and have white text
-// search text box needs to fill aside width and have curved edges - *DONE*
-// search button to be blue with curved edges and also fill aside width - *DONE*
-// location list/buttons need to be light grey with curved edges and fill the aside width - *DONE*
-// 5-day forecast boxes need a background colour and to have a margin/padding round them
 

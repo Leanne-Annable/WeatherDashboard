@@ -2,6 +2,7 @@ button {
     background-color: lightgrey;
     border: 1px solid lightgrey;
     border-radius: 10px;
+    height: 40px;
 }
 
 #city-list{
@@ -15,9 +16,8 @@ button {
     margin-bottom: 10px;
 }
 
-
 #search-button{
-    background: lightskyblue;
+    background:  skyblue;
     border-radius: 5px;
     margin-top: 5px;
     padding: 0;
@@ -39,6 +39,7 @@ button {
     border-width: 1px;
     border-radius: 5px;
     margin-bottom: 5px;
+    height: 40px;
 }
 
 #five-forecast{
@@ -46,5 +47,22 @@ button {
 }
 
 .forecast{
-    padding: 0 !important;
+    background-color: rgb(42, 75, 117);
+    margin-right: 10px;
+    color: white;
+    padding: 5px !important;
+}
+
+.weather-header{
+    background-image: linear-gradient(to right, royalblue, midnightblue );
+}
+
+.withBorder{
+    border: 1px solid black;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+#forecast-heading{
+    margin-left: 15px;
 }
