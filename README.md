@@ -11,11 +11,13 @@ It gives you the temperature, wind speed and humidity for each day.
 
 To use this website:
 - Type in the text box, the city you would like to check the weather for.
+- If you would like to search a city in a specific country, please add a comma after the city name, followed by the country.
 - When you click the search button, the data will be presented on the right side of the screen.
-- Your searched cities will be stored in a list under the search button.
+- The current weather will be presented in the large top box, the five day forecast will be below that.
+- Your searched cities will be stored in a list under the search and clear buttons to the left.
 - If you click on the cities in the search history, you will be presented with the data for that city again.
-- If you require to change the text or delete it, just modify within the text box and press the save button again.
-- Upon reloading the page, the new text (or blank space if the text was deleted) will now be there instead.
+- Upon reloading the page, the search history will still be there unless cleared.
+- The clear button clears the search history.
 
 
 (screenshot images below)
