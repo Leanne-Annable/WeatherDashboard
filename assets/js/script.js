@@ -22,6 +22,7 @@ var apiKey = "48028b3db5f1aefd0fc887212580e039"; // my API key
 var cityInput = ""; // a variable to store the city
 var mainCard = $("#today"); // selects the main card to be able to put todays data in it
 var dailyCards = $("#five-forecast"); // selects anything held within the 5-day forecast section
+var searchInput = $("#search-input"); // selects the search input box
 
 // calls the function to show previous searches as buttons
 renderSearchHistory()
@@ -32,9 +33,9 @@ renderSearchHistory()
 function getWeather() {
     // empty any current values for todays weather and the forecast
     mainCard.empty();
+    dailyCards.empty();
     // add a class to the div so i can add a border when the function is run
     mainCard.addClass("withBorder");
-    dailyCards.empty();
     // do an ajax call to the website
     $.ajax({
         url: "https://api.openweathermap.org/data/2.5/weather?q=" + capCity + "&appid=" + apiKey + "&units=metric",
@@ -48,43 +49,37 @@ function getWeather() {
         var iconURL = $("<img>").attr("src", "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png");
         var temp = $("<p>").text("Temp: " + response.main.temp + "°C");
         var windSpeed = $("<p>").text("Wind: " + response.wind.speed + " m/sec");
-        var humidity = $("<p>").text("Humidity: " + response.main.humidity + "%"); 
+        var humidity = $("<p>").text("Humidity: " + response.main.humidity + "%");
         // append the items to the top secion display
         mainCard.append(currentCity, iconURL, temp, windSpeed, humidity);
-        })
+    })
     $.ajax({
         url: "https://api.openweathermap.org/data/2.5/forecast?q=" + capCity + "&appid=" + apiKey + "&units=metric",
         method: "GET"
-    }).then(function(response){
+    }).then(function (response) {
         // create a for loop to loop through the data 5 times
-        for (i=0; i<response.list.length; i++){
+        for (i = 0; i < 5; i++) {
+            // each day is split into 8 time chunks
+            var localDate = moment.unix(response.list[((i + 1) * 8) - 1].dt + response.city.timezone).format("DD-MM-YYYY");
             // create a new div for each day giving the class column and forecast
             var newCard = $("<div>").attr("class", "col forecast");
             // console.log(newCard);
-            // create a list of each of the time sections retrieved
-            var dateList = moment(response.list[i].dt_txt).format("(DD/MM/YYYY) HH:mm:ss")
-            // console.log(dateList)
-            // filter through to get the 12:00 times
-            var forecastDate = moment(response.list[i].dt_txt).format("(DD/MM/YYYY)");
-            if (dateList === forecastDate + " 12:00:00"){
-                // console.log(dateList)
-                // create a new div for each of these
-                dailyCards.append(newCard);
-                // get the date
-                var headDate = $("<h5>").text(forecastDate);
-                // get the icon
-                var forecastIcon= $("<img>").attr("src", "http://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png")
-                // get the temp
-                var forecastTemp = $("<p>").text("Temp: " + response.list[i].main.temp + "°C");
-                // get the wind speed
-                var forecastWind = $("<p>").text("Wind: " + response.list[i].wind.speed + " m/sec");
-                // get the humidity
-                var forecastHumidity = $("<p>").text("Humidity: " + response.list[i].main.humidity + "%"); 
-                newCard.append(headDate, forecastIcon, forecastTemp, forecastWind, forecastHumidity);
-            }
-        }        
-    })
-}
+            // get the date
+            var forecastDate = $("<h5>").text(localDate);
+            // get the icon
+            var forecastIcon = $("<img>").attr("src", "http://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png")
+            // get the temp
+            var forecastTemp = $("<p>").text("Temp: " + response.list[i].main.temp + "°C");
+            // get the wind speed
+            var forecastWind = $("<p>").text("Wind: " + response.list[i].wind.speed + " m/sec");
+            // get the humidity
+            var forecastHumidity = $("<p>").text("Humidity: " + response.list[i].main.humidity + "%");
+            newCard.append(forecastDate, forecastIcon, forecastTemp, forecastWind, forecastHumidity);
+            dailyCards.append(newCard);
+        }
+    }  )     
+    }
+
 
 // function for rendering the search history from the local storage
 function renderSearchHistory() {
@@ -122,13 +117,13 @@ $("#search-button").on("click", function (event) {
     event.preventDefault();
 
     // grab the input from the text box
-    cityInput = $("#search-input").val();
+    cityInput = searchInput.val();
     // take the first letter of the word, turn the it to a capital letter and add it to the rest of the word
     capCity = cityInput.charAt(0).toUpperCase() + cityInput.slice(1);
     // get the data from the weather site using a created getWeather function
     getWeather();
     // check that a location has been inputted
-    if (cityInput === "" || cityInput === " "){
+    if (cityInput === "" || cityInput === " ") {
         alert("Please input a location")
         return
     }
@@ -144,10 +139,9 @@ $("#search-button").on("click", function (event) {
         // set the item to local storage using JSON stringify to make an array
         localStorage.setItem("SearchHistory", JSON.stringify(locationsArray));
     };
-
     //console.log(locationsArray) // check to see if it works - it does XD
-
     renderButtons() // call a function to render the buttons of the cities selected
+    searchInput.val("");
 })
 
 // reselect data from the search history
@@ -157,3 +151,10 @@ $(".city").on("click", function (event) {
     getWeather();
 })
 
+// clear search history
+$("#clear-button").on("click", function () {
+    // clears local storage
+    window.localStorage.clear();
+    // refreshes page
+    location.reload();
+})

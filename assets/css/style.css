@@ -17,14 +17,22 @@ button {
 }
 
 #search-button{
-    background:  skyblue;
+    background:  cornflowerblue;
     border-radius: 5px;
     margin-top: 5px;
     padding: 0;
+    
+}
+#clear-button{
+    background: firebrick;
+    border-radius: 5px;
+    margin-top: 5px;
+    padding: 0;
+    height: 30px;
 }
 
 .input-group-append{
-    display: block;
+    display: block !important;
     padding: 0 !important;
 }
 
