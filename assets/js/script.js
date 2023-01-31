@@ -37,6 +37,7 @@ function getWeather() {
     // add a class to the div so i can add a border when the function is run
     mainCard.addClass("withBorder");
     // do an ajax call to the website
+    forecastHeading.innerText = "5-Day Forecast:";
     $.ajax({
         url: "https://api.openweathermap.org/data/2.5/weather?q=" + capCity + "&appid=" + apiKey + "&units=metric",
         method: "GET"
@@ -120,8 +121,6 @@ $("#search-button").on("click", function (event) {
     cityInput = searchInput.val();
     // take the first letter of the word, turn the it to a capital letter and add it to the rest of the word
     capCity = cityInput.charAt(0).toUpperCase() + cityInput.slice(1);
-    // get the data from the weather site using a created getWeather function
-    getWeather();
     // check that a location has been inputted
     if (cityInput === "" || cityInput === " ") {
         alert("Please input a location")
@@ -139,6 +138,8 @@ $("#search-button").on("click", function (event) {
         // set the item to local storage using JSON stringify to make an array
         localStorage.setItem("SearchHistory", JSON.stringify(locationsArray));
     };
+    // get the data from the weather site using a created getWeather function
+    getWeather();
     //console.log(locationsArray) // check to see if it works - it does XD
     renderButtons() // call a function to render the buttons of the cities selected
     searchInput.val("");
